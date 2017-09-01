@@ -15,7 +15,6 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
   <!-- Firebase Reference -->
- <!--  <script src="https://www.gstatic.com/firebasejs/live/3.0/firebase.js"></script> -->
   <script src="https://www.gstatic.com/firebasejs/4.3.0/firebase.js"></script>
   <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
@@ -24,7 +23,7 @@
 <body>
 
   <div class="container">
-<!--     <br> -->
+
     <div class="page-header">
       <h1 class="text-center">Rock Paper Scissors</h1>
     </div>
@@ -40,32 +39,26 @@
 
     <div class="row text-center game-section">
       <div class="col-sm-3 col-sm-offset-1 playDiv" id="player1">
-<!--         <div> -->
           <h3 id="head1">Waiting for Player 1</h3>
           <div id="choices1"></div>
           <h4 id="score1"></h4>
-<!--         </div> -->
       </div>
       <div class="col-sm-3 col-sm-offset-1 playDiv" id="result">
       </div>
       <div class="col-sm-3 col-sm-offset-1 playDiv" id="player2">
-<!--         <div> -->
           <h3 id="head2">Waiting for Player 2</h3>
           <div id="choices2"></div>
           <h4 id="score2"></h4>
-<!--         </div> -->
       </div>      
     </div>
 
     <div class="row">
       <div class="col-sm-6 col-sm-offset-3" id="chatDiv">
-        <!-- <textarea id="chatBox" class="form-control" rows="6"></textarea> -->
         <div id="chatBox"></div>
         <form class='form-inline'>
           <input type="text" class="form-control" id="message">
           <button type="submit" class="btn btn-primary" id="send">Send</button>
         </form>
-        <!-- <button type="submit" id="form-submit" class="btn btn-success btn-lg pull-right ">Submit</button> -->
       </div>
     </div>
 

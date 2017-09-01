@@ -26,14 +26,9 @@ h1 {
 #choices1, #choices2 {
 	height: 130px;
 }
-/*.player-form {
-	width: 30%;
-	margin: 0 auto;
-}*/
 
 #play-button {
     padding: 5px;
-   /* border-radius: 10%;*/
     font-size: 18px;
     width: 70px;
     margin-left: 10px;
@@ -63,9 +58,6 @@ h1 {
 	width: 70%;
 }
 
-/*#play-button {
-	width: 20%;
-}*/
 
 #chatBox {
 	height: 200px;
@@ -81,6 +73,10 @@ h1 {
 #send {
 	width: 60px;
 	margin-left: 1%;
+}
+
+#chatBox p {
+    margin-bottom: 0;
 }
 
 @media only screen and (max-width: 960px) {

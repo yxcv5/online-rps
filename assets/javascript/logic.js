@@ -10,8 +10,6 @@
   };
   firebase.initializeApp(config);
 
-// $(document).ready(function() {
-
 var database = firebase.database();
 var numWins=0;
 var numLosses = 0;
@@ -26,13 +24,8 @@ var opponent;
 var yourPick="";
 var opponentPick="";
 var round = 0;
-// var conKey;
-// var opponentKey;
 
-// var connectionsRef = database.ref("/connections");
-// var connectedRef = database.ref(".info/connected");
 var playersDataRef = database.ref("players");
-// var playersDataRef = firebase.database().ref("players");
 var thisPlayerRef;
 var options = ["Rock", "Paper", "Scissors"];
 var choicesHtml="";
@@ -45,45 +38,24 @@ var formHtml="<form class='form-inline text-center'>" +
              "<button class='btn btn-default' id='play-button' type='submit'>Start</button></form>";
 
 $(".game-entry").on("click", "#play-button", function(event) {
-// $("#play-button").on("click", function(event) {
-  console.log("clicked");
+
     event.preventDefault();
     player = $("#player-name").val().trim();	
     console.log(player, playerList.length);
-    // console.log(player);
-    // var sessionRef;
   if(playerList.length < 2) {
-  	// console.log(thisPlayerRef.key);
-  	// thisPlayerRef.remove();
-  	// console.log(thisPlayerRef.key);
     if(playerList.length===0) {       
-       // playerList.push(player_name);
-       // thisPlayerRef = playersDataRef.push("1");
         thisPlayerRef = playersDataRef.child("1");
-       // thisPlayerRef = database.ref("players/1");
-       // console.log(thisPlayerRef.key);
        playerId = 1;
-       // writePlayerData(ref, playerId, player_name, numWins, numLosses, numTies);
-       // sessionRef = playerConRef.push();
-       // sessionRef.set(playerId);
     }
     else if(playerList.length===1) {
-       // round=1;
-       // database.ref("/round").set(round);
        if(playerList[0] === 1) {
-       	 // thisPlayerRef = playersDataRef.push("2");
-       	 // thisPlayerRef = database.child("players").child("/2");
        	 thisPlayerRef = playersDataRef.child("2");
        	 playerId = 2;
        }
        else if(playerList[0] === 2) {
-       	 // thisPlayerRef = database.ref("players/1");
        	 thisPlayerRef = playersDataRef.child("1");
        	 playerId = 1;
        }
-       // round=1;
-       // database.ref("/round").set(round);
-       // thisPlayerRef.set({"name": player_name, "wins": numWins, "losses": numLosses});
     }
     isPlaying = true;
     thisPlayerRef.set({"name": player, "wins": numWins, "losses": numLosses});
@@ -95,9 +67,6 @@ $(".game-entry").on("click", "#play-button", function(event) {
     $("#head"+playerId).text(player);
     $("#score"+playerId).text("Wins: " + numWins + "   Losses: " + numLosses);
  }
- // else {
- //  	alert("Sorry but the game is full. Come back later!");
- // }  
 });
 
 playersDataRef.on("value", function(snapshot) {
@@ -134,7 +103,6 @@ playersDataRef.on("value", function(snapshot) {
        if(playerId===1) {
           round=1;
           console.log(round);
-       // round++;
           database.ref("/round").set(round);
        }
 
@@ -158,7 +126,6 @@ playersDataRef.on("value", function(snapshot) {
            othersLosses = snap.val().losses;
        });
        console.log(othersName, othersWins, othersLosses);
-       // var othersName = snapshot.val().othersId.name;
        $("#head"+othersId).text(othersName);
        $("#score"+othersId).text("Wins: " + othersWins + "   Losses: " + othersLosses);
     }
@@ -168,15 +135,12 @@ playersDataRef.on("value", function(snapshot) {
         if(isPlaying) {
            round = 0;
            database.ref().child("round").set(round);
-           // thisPlayerRef.child("choice").set(null);
            $(".prompt-msg").text("Waiting for another player to join.");
            $("#head"+opponentId).text("Waiting for Player " + opponentId);
            $("#score"+opponentId).empty();
            $("#choices"+opponentId).empty();
            $("#choices"+playerId).empty();
            $("#chatBox").append("<p>" + opponent +" has disconnected.</p>");
-           // var str = "" + opponent + " has disconnected";
-           // document.getElementById("chatBox").value += str;
         }
         else {
            $(".game-entry").empty();
@@ -206,6 +170,7 @@ playersDataRef.on("value", function(snapshot) {
   else if(length === 0 && playerList.length === 0) { //no players at the page load
     console.log("hit here first");
       database.ref("round").set(null); 
+      database.ref("chat").set(null);
   }
 }, function(errorObject) {
       console.log("Errors handled: " + errorObject.code);
@@ -215,11 +180,8 @@ database.ref("round").on("value", function(snapshot) {
    console.log("or here first");
    round = snapshot.val();
    console.log("round " + round);
-   // if(isPlaying && playerList.length === 2) {  
    if(isPlaying && (round>0)) { //game in session
-      // playersDataRef.child(""+playerId).child("choice").remove();
       console.log("new round " + round);
-   	  // round = snapshot.val();
       console.log(promptDiv);
    	  $("#choices1").empty();
    	  $("#choices2").empty();
@@ -234,7 +196,6 @@ database.ref("round").on("value", function(snapshot) {
       var player2Wins;
       var player2Losses;     
       playersDataRef.once("value", function(snap) {
-      //database.ref().child("players").once("value", function(snap) {
           player1Name = snap.child("1").child("name").val();
           player1Wins = snap.child("1").child("wins").val();
           player1Losses = snap.child("1").child("losses").val();
@@ -246,9 +207,6 @@ database.ref("round").on("value", function(snapshot) {
       });
       console.log("whose turn?");
    	  if(playerId===1) {
-       	  // opponentId = 2;
-       	  // opponent = playersDataRef.child("2").val().name;
-          // subHead = "</br><h3 class='prompt-msg'>It is your turn!</h3>";
           subHead = $("<h4 class='prompt-msg'>").text("It is your turn!");
           $("#head2").text(player2Name);
           $("#score2").text("Wins: " + player2Wins + "   Losses: " + player2Losses);
@@ -256,7 +214,6 @@ database.ref("round").on("value", function(snapshot) {
        }
        else if(playerId===2) {
        	  console.log("player 2 wait");
-          // subHead = "</br><h3 class='prompt-msg'>Waiting for " + player1Name + " to choose.</h3>";
           subHead = $("<h4 class='prompt-msg'>").text("Waiting for " + player1Name + " to choose.");
           $("#head1").text(player1Name);
           $("#score1").text("Wins: " + player1Wins + "   Losses: " + player1Losses);
@@ -275,7 +232,6 @@ $(".game-section").on("click", ".choice", function() {
     if(prevPick===yourPick) {  //needs an extra step for the code to recognize this is a new pick.
       thisPlayerRef.child("choice").set(null); 
     }
-    // playersDataRef.child(""+playerId).push({
     thisPlayerRef.child("choice").set(yourPick);
     $("#choices"+playerId).empty();
     $("#choices"+playerId).html("<p class='bigFont'>" + yourPick + "</p>");
@@ -311,10 +267,7 @@ playersDataRef.child("2").child("choice").on("value", function(snap) {
     	 console.log("player win?");
        $("#result").html("<p class='bigFont'>" + player + " Wins!</p>");
        playersDataRef.child(""+playerId).update({"wins": numWins+1});
-       // playersDataRef.child(opponentId).update({"losses": numLosses+1});
-       // numWins = playersDataRef.child(""+playerId).val().wins;
        thisPlayerRef.child("wins").once("value", function(childsnap) {
-           // console.log(snap.key);
            numWins = childsnap.val();
            console.log(numWins);
        });
@@ -323,10 +276,7 @@ playersDataRef.child("2").child("choice").on("value", function(snap) {
     	 console.log("player lose?");
        $("#result").html("<p class='bigFont'>" + opponent + " Wins!</p>");
        playersDataRef.child(""+playerId).update({"losses": numLosses+1});
-       // playersDataRef.child(opponentId).update({"losses": numLosses+1});
-       // numLosses = playersDataRef.child(""+playerId).val().losses;
        thisPlayerRef.child("losses").once("value", function(childsnap) {
-           // console.log(snap.key);
            numLosses = childsnap.val();
            console.log(numLosses);
        });
@@ -335,16 +285,12 @@ playersDataRef.child("2").child("choice").on("value", function(snap) {
     	 console.log("a tie?");
        $("#result").html("<p class='bigFont'>Tie Game!</p>");
     }
-    // var herWins = playersDataRef.child(""+opponentId).val().wins;
-    // var herLosses = playersDataRef.child(""+opponentId).val().losses;
     var herWins;
     var herLosses;
     playersDataRef.child(""+opponentId).child("wins").once("value", function(childsnap) {
-           // console.log(snap.key);
            herWins = childsnap.val();
     });
     playersDataRef.child(""+opponentId).child("losses").once("value", function(childsnap) {
-           // console.log(snap.key);
            herLosses = childsnap.val();
     });
     $("#choices"+opponentId).html("<p class='bigFont'>" + opponentPick + "</p>");
@@ -362,28 +308,17 @@ $("#send").on("click", function(event) {
     if(isPlaying) {
        var msg = $("#message").val().trim();
        var str = " " + player +": " + msg;
-       // document.getElementById("chatBox").value += str;
        $("#chatBox").append("<p>" + player +": " + msg + "</p>");
-       database.ref().child("chat").child(""+playerId).set(msg);
-       //database.ref("message").set({key: msg});
+       database.ref().child("chat").push().set({"name": player, "message": msg});
+       $("#message").val("");
     }
 });
 
-database.ref("chat").child("1").on("child_added", function(snap) {
-// database.ref("chat").on("value", function(snap) {
-  if(isPlaying && playerId === 2) {
-     var msg = snap.val();
-     $("#chatBox").append("<p>" + opponent +": " + msg + "</p>");
-  }
-}, function(errorObject) {
-      console.log("Errors handled: " + errorObject.code);
-});
-
-database.ref("chat").child("2").on("child_added", function(snap) {
-// database.ref("chat").on("value", function(snap) {
-  if(isPlaying && playerId === 1) {
-     var msg = snap.val();
-     $("#chatBox").append("<p>" + opponent +": " + msg + "</p>");
+database.ref("chat").on("child_added", function(snap) {
+  if(isPlaying) {
+     var who = snap.val().name;
+     if(who === opponent)
+      $("#chatBox").append("<p>" + opponent +": " + snap.val().message + "</p>");
   }
 }, function(errorObject) {
       console.log("Errors handled: " + errorObject.code);
@@ -418,4 +353,3 @@ function updateRound() {
   console.log(round);
 }
 
-// }); 
